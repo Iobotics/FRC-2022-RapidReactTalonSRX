@@ -5,4 +5,17 @@
 package frc.robot;
 
 /** Add your docs here. */
-public class Constants {}
+public final class Constants {
+    public static final class RobotMap{
+        public static final int kLeftMaster = 0;
+        public static final int kRightMaster = 2;
+        public static final int kLeftSlave = 1  ;
+        public static final int kRightSlave = 3;
+    
+        }
+    
+    public static final class OIConstants{
+        public static final int kJoystick1 = 0;
+        public static final int kJoystick2 = 1;
+        }
+    }
