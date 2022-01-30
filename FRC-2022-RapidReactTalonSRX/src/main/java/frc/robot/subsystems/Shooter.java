@@ -4,5 +4,21 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.RobotMap;
+
 /** Add your docs here. */
-public class Shooter {}
+public class Shooter extends SubsystemBase{
+
+    private CANSparkMax shootLeft;
+    private CANSparkMax shootRight;
+
+    public void shooter(){
+            
+    }
+    
+}
