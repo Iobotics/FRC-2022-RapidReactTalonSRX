@@ -2,18 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants.RobotMap;
 
 /**
  * Before Running:
@@ -49,14 +48,33 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * load the shuffleboard.json file in the root of this directory to get the full
  * effect of the GUI layout.
  */
-public class Robot extends TimedRobot {
-  private static final int deviceID = 1;
-  private CANSparkMax m_motor;
-  private SparkMaxPIDController m_pidController;
-  private RelativeEncoder m_encoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+public class Shooter extends SubsystemBase{
+    
+    private static final int deviceID = 1;
+    private CANSparkMax m_motor;
+    private SparkMaxPIDController m_pidController;
+    private RelativeEncoder m_encoder;
+    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+    private CANSparkMax Arm;
 
-  @Override
+    public Shooter(){
+
+//THE FOLLOWING NEEDS TO BE DECLARED IN CONSTANTS (PID DRIVE RELATED)
+// CANSparkMax(device number, type of motor (NEO 775s in this case))
+        Arm = new CANSparkMax(RobotMap.kArm, MotorType.kBrushless); //CAN 8
+
+        //Set Motor Polarities (is it going to be inverted?)
+        Arm.setInverted(false);
+
+         /* The RestoreFactoryDefaults method can be used to reset the configuration parameters
+        in the SPARK MAX to their factory default state. If no argument is passed, these
+        parameters will not persist between power cycles
+        */
+        Arm.restoreFactoryDefaults();
+
+    }
+
+@Override
   public void robotInit() {
     // initialize motor
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
@@ -133,8 +151,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Mode", true);
   }
 
-  @Override
-  public void teleopPeriodic() {
+  @Override 
+    public void teleopPeriodic() {
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
@@ -184,4 +202,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Process Variable", processVariable);
     SmartDashboard.putNumber("Output", m_motor.getAppliedOutput());
   }
+
 }
+
