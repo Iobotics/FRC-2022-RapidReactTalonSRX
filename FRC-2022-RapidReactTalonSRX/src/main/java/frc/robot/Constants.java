@@ -8,7 +8,8 @@ package frc.robot;
 public final class Constants {
     public static final class RobotMap{
 
-        //Drivetrain devices
+
+        //drivetrain devices(motors)
         public static final int kLeftMaster = 0;
         public static final int kRightMaster = 2;
         public static final int kLeftSlave = 1  ;
@@ -43,6 +44,7 @@ public final class Constants {
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
     static final Gains kGains = new Gains(0.000000001, 0.001, 0.0001, 0.2, 0, 1.0);
+        //intake devices(motors)
     
         
     

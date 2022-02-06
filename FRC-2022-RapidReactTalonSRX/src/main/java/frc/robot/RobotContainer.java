@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
+
+
 
 /** Add your docs here. */
 public class RobotContainer {
@@ -25,7 +28,7 @@ public class RobotContainer {
   private final Joystick joystick1 = new Joystick(OIConstants.kJoystick1);
   private final Joystick joystick2 = new Joystick(OIConstants.kJoystick2);
   private final WPI_TalonFX _talon = new WPI_TalonFX(1);
-
+  private final Shooter shootLeft = new Shooter();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -45,7 +48,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-      
+
+    new JoystickButton(joystick2, 2).whileHeld(
+        new StartEndCommand(
+          ()-> shootLeft.setPercent(SmartDashboard.getNumber("DB SLider 0", 0)),
+          ()-> shootLeft.stop())
+        );
   }
 
   public Command getAutonomousCommand() {
