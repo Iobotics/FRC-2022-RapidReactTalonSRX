@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -28,7 +30,7 @@ public class Robot extends TimedRobot {
   private final MotorController m_rightMotor = new PWMSparkMax(1);
 
   /* Hardware */
-	WPI_TalonFX _talon = new WPI_TalonFX(1, "FastFD"); // Use the faster CanFD bus with a CANivore to reduce bandwidth utilization
+	WPI_TalonFX _talon = new WPI_TalonFX(1);
 	Joystick _joy = new Joystick(0);
 
 	/* Used to build string throughout loop */
@@ -41,7 +43,7 @@ public class Robot extends TimedRobot {
 	int _pov = -1;
 
 	public void simulationInit() {
-		PhysicsSim.getInstance().addTalonFX(_talon, 0.5, 5100);
+		PhysicsSim.getInstance().addTalonFX(_talon, 0.4, 5100);
 	}
 	public void simulationPeriodic() {
 		PhysicsSim.getInstance().run();
@@ -133,53 +135,10 @@ public class Robot extends TimedRobot {
 		_sb.append("\tVel:");
 		_sb.append(_talon.getSelectedSensorVelocity(Constants.kPIDLoopIdx));
 
-		/**
-		 * Perform Motion Magic when Button 1 is held, else run Percent Output, which can
-		 * be used to confirm hardware setup.
-		 */
-		if (_joy.getRawButton(1)) {
-			/* Motion Magic */
+		_talon.set(TalonFXControlMode.MotionMagic, SmartDashboard.getNumber("DB/Slider 3", 0));
+		SmartDashboard.putNumber("DB/Slider 1", _talon.getSelectedSensorPosition(Constants.kPIDLoopIdx));
 
-			/* 2048 ticks/rev * 10 Rotations in either direction */
-			double targetPos = rghtYstick * 2048 * 10.0;
-			_talon.set(TalonFXControlMode.MotionMagic, targetPos);
-
-			/* Append more signals to print when in speed mode */
-			_sb.append("\terr:");
-			_sb.append(_talon.getClosedLoopError(Constants.kPIDLoopIdx));
-			_sb.append("\ttrg:");
-			_sb.append(targetPos);
-		} else {
-			/* Percent Output */
-
-			_talon.set(TalonFXControlMode.PercentOutput, leftYstick);
-		}
-		if (_joy.getRawButton(2)) {
-			/* Zero sensor positions */
-			_talon.setSelectedSensorPosition(0);
-		}
-
-		int pov = _joy.getPOV();
-		if (_pov == pov) {
-			/* no change */
-		} else if (_pov == 180) { // D-Pad down
-			/* Decrease smoothing */
-			_smoothing--;
-			if (_smoothing < 0)
-				_smoothing = 0;
-			_talon.configMotionSCurveStrength(_smoothing);
-
-			System.out.println("Smoothing is set to: " + _smoothing);
-		} else if (_pov == 0) { // D-Pad up
-			/* Increase smoothing */
-			_smoothing++;
-			if (_smoothing > 8)
-				_smoothing = 8;
-			_talon.configMotionSCurveStrength(_smoothing);
-
-			System.out.println("Smoothing is set to: " + _smoothing);
-		}
-		_pov = pov; /* save the pov value for next time */
+		
 
 		/* Instrumentation */
 		Instrum.Process(_talon, _sb);
