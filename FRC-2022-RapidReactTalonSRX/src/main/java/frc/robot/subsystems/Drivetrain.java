@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -34,7 +35,10 @@ public class Drivetrain extends SubsystemBase{
         
         leftSlave.follow(leftMaster);
         rightSlave.follow(rightMaster);
-
-
+        
     }
+    public void stop() {
+        leftMaster.set(ControlMode.PercentOutput, 0);
+        rightMaster.set(ControlMode.PercentOutput, 0);
+      }
 }
