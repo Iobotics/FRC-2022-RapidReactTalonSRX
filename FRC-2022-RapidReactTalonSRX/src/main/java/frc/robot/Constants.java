@@ -9,9 +9,9 @@ public final class Constants {
     public static final class RobotMap{
 
         //drivetrain devices(motors)
-        public static final int kLeftMaster = 0;
+        public static final int kLeftMaster = 1;
         public static final int kRightMaster = 2;
-        public static final int kLeftSlave = 1  ;
+        public static final int kLeftSlave = 4;
         public static final int kRightSlave = 3;
 
         //intake devices(motors)

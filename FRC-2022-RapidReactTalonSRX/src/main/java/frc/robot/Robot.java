@@ -25,17 +25,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
  */
 public class Robot extends TimedRobot {
 	
-	Drivetrain drivetrain;
-	double distance;
-
-public void motorTurn(Drivetrain drivetrain, double distance) {
-	// Use addRequirements() here to declare subsystem dependencies.
-	
-	this.drivetrain = drivetrain;
-	this.distance = distance;
-	
-	
-  }
+	Drivetrain drivetrain = new Drivetrain();
   
 
   
@@ -54,8 +44,7 @@ public void motorTurn(Drivetrain drivetrain, double distance) {
 
   @Override
   public void teleopPeriodic() {
-	drivetrain.motionMagic(distance, SmartDashboard.getNumber("D/B Slider 1", 0));
-    SmartDashboard.putNumber("D/B Slider 2", drivetrain.leftMaster.getSelectedSensorPosition());
+	drivetrain.motionMagic(SmartDashboard.getNumber("D/B Slider 1", 0), 4);
 
   }
 }

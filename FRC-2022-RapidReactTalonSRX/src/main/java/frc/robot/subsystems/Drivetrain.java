@@ -18,21 +18,21 @@ import frc.robot.Constants.RobotMap;
 public class Drivetrain extends SubsystemBase{
 
     public WPI_TalonFX leftMaster;
-    private WPI_TalonFX rightMaster;
+    /*private WPI_TalonFX rightMaster;
     private WPI_TalonFX leftSlave;
-    private WPI_TalonFX rightSlave;
+    private WPI_TalonFX rightSlave;*/
 
     public DifferentialDrive drive;
 
     public Drivetrain(){
         leftMaster = new WPI_TalonFX(RobotMap.kLeftMaster);
-        rightMaster = new WPI_TalonFX(RobotMap.kRightMaster);
+        /*rightMaster = new WPI_TalonFX(RobotMap.kRightMaster);
         leftSlave = new WPI_TalonFX(RobotMap.kLeftSlave);
         rightSlave = new WPI_TalonFX(RobotMap.kRightSlave);
-        drive = new DifferentialDrive(leftMaster, rightMaster);
+        drive = new DifferentialDrive(leftMaster, rightMaster);*/
         
         leftMaster.setInverted(false);
-        leftSlave.setInverted(false);
+        /*leftSlave.setInverted(false);
         rightMaster.setInverted(false);
         rightSlave.setInverted(false);
         
@@ -41,17 +41,17 @@ public class Drivetrain extends SubsystemBase{
 
         //Config Slave Deadband
         leftSlave.configNeutralDeadband(0);
-         rightSlave.configNeutralDeadband(0);
+        rightSlave.configNeutralDeadband(0);*/
 
         //Config Ramp Rate
         leftMaster.configOpenloopRamp(1);
-        rightMaster.configOpenloopRamp(1);
+        //rightMaster.configOpenloopRamp(1);
 
         //Config NeutralMode to brake
         leftMaster.setNeutralMode(NeutralMode.Coast);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
+        /*rightMaster.setNeutralMode(NeutralMode.Coast);
         leftSlave.setNeutralMode(NeutralMode.Coast);
-        rightSlave.setNeutralMode(NeutralMode.Coast);
+        rightSlave.setNeutralMode(NeutralMode.Coast);*/
 
         //Configure PIDF values for Auto drive, the Left Master is the master controller for PID
         leftMaster.config_kP(0, DrivetrainConstants.kP);
@@ -65,19 +65,19 @@ public class Drivetrain extends SubsystemBase{
    * Reconfigures the motors to the drive settings
    */
   public void config() {
-    rightMaster.configFactoryDefault();
+    /*rightMaster.configFactoryDefault();
     rightMaster.setInverted(true);
-    rightSlave.follow(rightMaster);
+    rightSlave.follow(rightMaster);*/
   } 
 
   public void stop() {
     leftMaster.set(ControlMode.PercentOutput, 0);
-    rightMaster.set(ControlMode.PercentOutput, 0);
+    //rightMaster.set(ControlMode.PercentOutput, 0);
   }
   
   public void setTank(double leftPower, double rightPower){
     leftMaster.set(ControlMode.PercentOutput, leftPower);
-    rightMaster.set(ControlMode.PercentOutput, rightPower);
+    //rightMaster.set(ControlMode.PercentOutput, rightPower);
   }
 
 
@@ -87,8 +87,8 @@ public class Drivetrain extends SubsystemBase{
         //Convert target speed from inches / second to encoder units / 100 ms
         double targetSpeed = (speed *DrivetrainConstants.kGearRatio * 2048 * 10) / (DrivetrainConstants.kWheelDiameter * Math.PI);
     
-        rightSlave.follow(leftMaster);
-        rightMaster.follow(leftMaster);
+        /*rightSlave.follow(leftMaster);
+        rightMaster.follow(leftMaster);*/
         leftMaster.configMotionCruiseVelocity((int)targetSpeed);
         leftMaster.configMotionAcceleration((int)targetSpeed);
         leftMaster.setSelectedSensorPosition(0);
